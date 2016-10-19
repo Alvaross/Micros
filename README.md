@@ -1,2 +1,0 @@
-# Micros
-Sistemas Micropocesados
