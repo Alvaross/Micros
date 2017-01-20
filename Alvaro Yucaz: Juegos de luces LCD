@@ -1,0 +1,131 @@
+  //    Univerdidad tecnica del norte 
+  //          FICA-CIERCOM
+  //          Alvaro Yucaz
+  //          Juegos de Luces LCD
+#include<LiquidCrystal.h>
+LiquidCrystal lcd (9, 8, 7, 6, 5, 4);
+String dato_usuario; //Vector en donde guardaremos la palabra ingresada
+int tam; //Variable en donde guardaremos el tamaño del vector "dato"
+int iniciar = 1;
+
+void setup() {
+  Serial.begin(9600);
+  lcd.begin(16, 2);
+  }
+
+void loop() {
+  if (iniciar == 1) {
+    if (Serial.available() > 0) {
+      lcd.clear();
+      grabarPalabra();
+      empezar();
+      Serial.println("");
+    }
+  }
+}
+
+//En este método grabamos la palabra ingresada
+void grabarPalabra() {
+  Serial.println("Ingrese la palabra a visualizarce en el LCD");
+  t_espera();
+  dato_usuario = Serial.readString();
+  tam = dato_usuario.length();
+  Serial.println("");
+}
+
+//En este método ingresamos que juego queremos vizualizar
+void empezar() {
+  char respuest;//Variable con la que compararemos la opción ingresada
+  Serial.println("Elija un juego (A,B;C):");
+  t_espera();
+  respuest = Serial.read();
+  if ((respuest == 'A') || (respuest == 'a')) {
+    juego1();
+  }
+  else {
+    if ((respuest == 'B') || (respuest == 'b')) {
+      juego2();
+    }
+    else {
+      if ((respuest == 'C') || (respuest == 'c')) {
+        juego3();
+      }
+      else {
+        Serial.println(" ");
+        grabarPalabra();
+      }
+    }
+  }
+}
+
+//Juego 1
+void juego1() {
+  int vel;
+  for ( int a = 1; a < 30; a++) {
+    lcd.setCursor(0, 1);
+    lcd.print("                 ");
+    lcd.setCursor(0, 0);
+    lcd.print(dato_usuario);
+    vel = 150 - (a * 5);
+    delay(vel);//Tiempo de espera
+    lcd.setCursor(0, 0);
+    lcd.print("                 ");
+    lcd.setCursor(0, 1);
+    lcd.print(dato_usuario);
+    vel = 150 - (a * 5);
+    delay(vel);//Tiempo de espera
+  }
+
+  lcd.clear();//Limpiamos la pantalla del LCD
+}
+
+//Juego 2
+void juego2() {
+  lcd.setCursor(16, 0);
+  lcd.print(dato_usuario);
+  int k = 0;
+  for (; k < (17 + tam); k++) {
+    lcd.setCursor(16, 0); // ponemos el cursor fuera del reango del display
+    lcd.autoscroll();    // Activa el scroll automatico
+    lcd.print(" ");      // imprime un character en blanco
+    delay(100);
+  }
+  lcd.noAutoscroll();//Desactiva el scroll automatico
+  lcd.clear();//Limpia la pantalla del LCD
+}
+
+//Juego 3
+void juego3() {
+  int i = 0;
+  int j = 0;
+  char mensaje3[tam];
+  dato_usuario.toCharArray(mensaje3, tam + 1);
+  for (; i < tam; i++) {
+    j = 1 - j;
+    lcd.setCursor(i, j);
+    lcd.print(mensaje3[i]);
+    delay(200);
+    lcd.setCursor(i, j);
+    lcd.print('*');
+  }
+  for (; i >= 0; i--) {
+    j = 1 - j;
+    lcd.setCursor(i, j);
+    lcd.print(mensaje3[i]);
+    delay(200);
+    lcd.setCursor(i, j);
+    lcd.print(" ");
+  }
+  lcd.clear();//Limpia la pantalla del LCD
+}
+
+//Tiempo de espera. Este método se ejecuta mientras el usuario no ingrese ningún dato
+void t_espera() {
+  for (; Serial.available() == 0; ) {
+  }
+}
+
+//Método de interrupción
+void interrumpir() {
+  iniciar= iniciar + 1;
+}
