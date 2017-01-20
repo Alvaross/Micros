@@ -1,0 +1,250 @@
+//    Universidad Tecnica del Norte
+//        FICA-CIERCOM
+//      Alvaro Yucaz
+//      Teclado Tab
+// incluimos librerias
+#include <Keypad.h>
+#include <LiquidCrystal.h>
+#include <TimerOne.h>
+LiquidCrystal lcd (13,12,11,10,9,8);
+int contador = 6;
+int posicion = 0;
+int num2 = 0;
+int num3 = 3;
+int num4 = 6;
+int num5 = 9;
+int num6 = 12;
+int num7 = 15;
+int num8 = 19;
+int num9 = 22;
+char letra;
+const byte ROWS = 4; //CUATRO filas
+const byte COLS = 4; //Cuatro columnas
+//dSimbolos del teclado 
+char hexaKeys[ROWS][COLS] = {
+  {'1', '2', '3',' '},
+  {'4', '5', '6',' '},
+  {'7', '8', '9',' '},
+  {'*', '0', '#',' '}
+};
+ //conectamos los pines al teclado
+byte rowPins[ROWS] = {3, 2, 1, 0}; 
+byte colPins[COLS] = {7, 6, 5, 4}; 
+
+//Inicializamos las variables en el teclado
+Keypad customKeypad = Keypad( makeKeymap(hexaKeys), rowPins, colPins, ROWS, COLS);
+
+void setup() {
+
+  lcd.begin(16, 2);
+  Timer1.initialize(150000);
+  Timer1.attachInterrupt(espera);
+}
+
+void loop() {
+
+  char customKey = customKeypad.getKey();
+  if (customKey) 
+  {
+      if (customKey == '1')
+      {
+      lcd.setCursor(posicion, 0);
+      lcd.print('1');
+      contador = 0;
+    }
+    if (customKey == '2') {
+      num2++;
+      letras(num2);
+      lcd.setCursor(posicion, 0);
+      lcd.print(letra);
+      if (num2 == 3) {
+        num2 = 0;
+      }
+      contador = 0;
+    }
+    if (customKey == '3') {
+      num3++;
+      letras(num3);
+      lcd.setCursor(posicion, 0);
+      lcd.print(letra);
+      if (num3== 6) {
+        num3 = 3;
+      }
+      contador = 0;
+    }
+
+    if (customKey == '4') {
+
+      num4++;
+      letras(num4);
+      lcd.setCursor(posicion, 0);
+      lcd.print(letra);
+      if (num4 == 9) {
+        num4 = 6;
+      }
+      contador = 0;
+
+    }
+
+    if (customKey == '5') {
+
+      num5++;
+      letras(num5);
+      lcd.setCursor(posicion, 0);
+      lcd.print(letra);
+      if (num5 == 12) {
+        num5 = 9;
+      }
+      contador = 0;
+    }
+
+    if (customKey == '6') {
+
+      num6++;
+      letras(num6);
+      lcd.setCursor(posicion, 0);
+      lcd.print(letra);
+      if (num6 == 15) {
+        num6 = 12;
+      }
+      contador = 0;
+    }
+
+    if (customKey == '7') {
+      num7++;
+      letras(num7);
+      lcd.setCursor(posicion, 0);
+      lcd.print(letra);
+      if (num7 == 19) {
+        num7 = 15;
+      }
+      contador = 0;
+    }
+
+    if (customKey == '8') {
+      num8++;
+      letras(num8);
+      lcd.setCursor(posicion, 0);
+      lcd.print(num8);
+      if (num8 == 22) {
+        num8 = 19;
+      }
+      contador = 0;
+    }
+
+    if (customKey == '9') {
+      num9++;
+      letras(num9);
+      lcd.setCursor(posicion, 0);
+      lcd.print(letra);
+      if (num9 == 26) {
+        num9 = 22;
+      }
+      contador = 0;
+    }
+
+    if (customKey == '0') {
+      lcd.setCursor(posicion, 0);
+      lcd.print(' ');
+      contador = 0;
+    }
+  }
+}
+void espera() {
+  contador++;
+  if (contador == 6) {
+    posicion++;
+    num2 = 0;
+    num3 = 3;
+    num4 = 6;
+    num5 = 9;
+    num6 = 12;
+    num7 = 15;
+    num8 = 19;
+    num9 = 22;
+  }
+}
+char letras(int dato) {
+  switch (dato) {
+    case 1:
+      letra = 'a';
+      break;
+    case 2:
+      letra = 'b';
+      break;
+    case 3:
+      letra = 'c';
+      break;
+    case 4:
+      letra = 'd';
+      break;
+    case 5:
+      letra = 'e';
+      break;
+    case 6:
+      letra = 'f';
+      break;
+    case 7:
+      letra = 'g';
+      break;
+    case 8:
+      letra = 'h';
+      break;
+    case 9:
+      letra = 'i';
+      break;
+    case 10:
+      letra = 'j';
+      break;
+    case 11:
+      letra = 'k';
+      break;
+    case 12:
+      letra = 'l';
+      break;
+    case 13:
+      letra = 'm';
+      break;
+    case 14:
+      letra = 'n';
+      break;
+    case 15:
+      letra = 'o';
+      break;
+    case 16:
+      letra = 'p';
+      break;
+    case 17:
+      letra = 'q';
+      break;
+    case 18:
+      letra = 'r';
+      break;
+    case 19:
+      letra = 's';
+      break;
+    case 20:
+      letra = 't';
+      break;
+    case 21:
+      letra = 'u';
+      break;
+    case 22:
+      letra = 'v';
+      break;
+    case 23:
+      letra = 'w';
+      break;
+    case 24:
+      letra = 'x';
+      break;
+    case 25:
+      letra = 'y';
+      break;
+    case 26:
+      letra = 'z';
+      break;
+  }
+  return letra;
+}
+
